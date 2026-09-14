@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DollaDesk — know who owes you money</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">💵 DollaDesk</div>
+  <div class="sub">know who owes you money</div>
+  <nav><a href="#app">App</a><a href="/api.html">API docs</a><a href="/api/export.csv">Export CSV</a></nav>
+</header>
+
+<main class="wrap">
+  <!-- FRONT PAGE / EXPLAINER -->
+  <section class="panel hero">
+    <h1>What the hell is this?</h1>
+    <p class="lede">DollaDesk is a dead-simple invoice tracker for freelancers and side-hustlers.
+    You do work → you add an invoice → you mark it paid when money lands.
+    Top bar always tells you <b>billed / paid / pending / overdue</b>. That's it.</p>
+    <div class="grid3">
+      <div><b>📦 Like a package manager, but for money</b><br/><span>Each invoice is a package: client = name, amount = version, status = paid/pending, just like installed vs. available.</span></div>
+      <div><b>⚡ 30 seconds to use</b><br/><span>No login. Add client + amount + due date. Search, sort, filter, export CSV for taxes.</span></div>
+      <div><b>🔌 Real API inside</b><br/><span>Every button calls <code>/api/...</code>. Bots and automations can use the same endpoints. See <a href="/api.html">API docs</a>.</span></div>
+    </div>
+    <div class="heroBtns">
+      <a class="btn" href="#app">Open the tracker ↓</a>
+      <a class="btn ghost" href="/api.html">How the API works</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>How it works (3 steps)</h2>
+    <ol class="steps">
+      <li><b>Add</b> — client, amount in USD, due date, optional note like "Logo design".</li>
+      <li><b>Track</b> — overdue rows turn red, search filters as you type, chips show All / Pending / Paid.</li>
+      <li><b>Get paid</b> — hit <i>Mark paid</i>, watch Pending drop to $0, hit <i>Export CSV</i> at tax time.</li>
+    </ol>
+  </section>
+
+  <!-- APP -->
+  <section id="app" class="cards">
+    <div class="card"><div class="label">Billed</div><div class="val" id="tBilled">$0</div></div>
+    <div class="card green"><div class="label">Paid</div><div class="val" id="tPaid">$0</div></div>
+    <div class="card orange"><div class="label">Pending</div><div class="val" id="tPending">$0</div></div>
+    <div class="card red"><div class="label">Overdue</div><div class="val" id="tOverdue">0</div></div>
+  </section>
+
+  <section class="panel">
+    <h2>New invoice</h2>
+    <form id="form">
+      <input id="client" maxlength="80" placeholder="Client name (e.g. Acme Co)" required />
+      <input id="amount" type="number" min="0.01" max="1000000" step="0.01" placeholder="Amount USD" required />
+      <input id="due" type="date" required />
+      <input id="notes" maxlength="200" placeholder="Note (optional, e.g. Logo design)" />
+      <button type="submit">Add invoice</button>
+    </form>
+    <p class="hint" id="msg"></p>
+  </section>
+
+  <section class="panel">
+    <div class="row">
+      <h2>Packages — I mean, invoices</h2>
+      <div class="toolbar">
+        <input id="q" placeholder="Search client or note…" />
+        <select id="sort">
+          <option value="">Newest</option>
+          <option value="due">Sort: due date</option>
+          <option value="amount">Sort: amount</option>
+          <option value="client">Sort: client</option>
+        </select>
+      </div>
+    </div>
+    <div class="filters">
+      <button data-f="all" class="chip active">All</button>
+      <button data-f="pending" class="chip">Pending</button>
+      <button data-f="paid" class="chip">Paid</button>
+    </div>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Client / note</th><th>Amount</th><th>Due</th><th>Status</th><th></th></tr></thead>
+      <tbody id="rows"><tr><td colspan="5">Loading…</td></tr></tbody>
+    </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>FAQ</h2>
+    <p><b>Where is my data?</b> In <code>data.json</code> next to the app. Export CSV often if hosted free.</p>
+    <p><b>Is there login?</b> No, v2 is single-user. Don't expose real client data publicly without adding auth.</p>
+    <p><b>How do I host free?</b> See <code>HOSTING.md</code> — GitHub upload → Render Docker Free → done.</p>
+  </section>
+
+  <footer>Backend <code>src/Main.java</code> + frontend <code>public/</code> + API <code>/api</code> · Full story in <code>README.md</code></footer>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
