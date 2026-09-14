@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>DollaDesk API docs</title><link rel="stylesheet" href="style.css"/></head>
+<body><main class="wrap"><div class="panel">
+<h2>DollaDesk API</h2>
+<p>Base URL is the same host that serves this page. All JSON.</p>
+<pre>GET  /api/health
+GET  /api
+GET  /api/stats
+GET  /api/invoices?q=acme&amp;paid=true|false&amp;sort=due|amount|client
+POST /api/invoices
+  {"client":"Acme","amount":500,"due":"2026-10-01","notes":"optional"}
+POST /api/invoices/toggle?id=ID
+DELETE /api/invoices?id=ID
+GET  /api/export.csv
+</pre>
+<p><a href="/">← back to app</a></p>
+</div></main></body></html>
