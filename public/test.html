@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>DollaDesk — Test</title><link rel="stylesheet" href="style.css"/></head><body>
+<main class="wrap">
+<div class="panel"><h2>API Test Page</h2><p>Auto-tests every endpoint. Copy the <code>curl</code> commands below to run manually.</p></div>
+<section class="cards">
+<div class="card"><div class="label">Health</div><div class="val" id="h">—</div></div>
+<div class="card"><div class="label">Stats</div><div class="val" id="s">—</div></div>
+<div class="card green"><div class="label">Invoices</div><div class="val" id="n">—</div></div>
+<div class="card orange"><div class="label">Export CSV</div><div class="val" id="c">—</div></div>
+</section>
+<div class="panel"><h2>Live</h2><pre id="log">Loading…</pre></div>
+<div class="panel"><h2>curl commands</h2><pre>curl BASE/api/health
+curl BASE/api/stats
+curl BASE/api/invoices
+curl -X POST BASE/api/invoices -H "Content-Type: application/json" -d "{""client"":""Test Co"",""amount"":99,""due"":""2026-12-31"",""notes"":""test""}"
+curl -X POST BASE/api/invoices/toggle?id=YOURID
+curl BASE/api/export.csv</pre></div>
+</main>
+<script>
+const BASE=location.origin;
+const $=id=>document.getElementById(id);
+async function t(label,url,opts){
+  try{const r=await fetch(url,opts); const j=await r.json(); log(label+": "+(r.ok?"OK":"ERR "+r.status)+" "+JSON.stringify(j).slice(0,200));}catch(e){log(label+": FETCH ERR "+e.message);}
+}
+async function load(){
+  log("--- testing all endpoints ---");
+  await t("health","/api/health");
+  await t("stats","/api/stats");
+  const inv=await(await fetch("/api/invoices")).json();
+  log("invoices: "+inv.length+" rows");
+  await t("export","/api/export.csv",{method:"GET"});
+}
+const log=(m)=>{$("log").textContent+="\n"+m;};
+load();
+</script>
+</body></html>
